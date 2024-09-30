@@ -2,9 +2,9 @@
   <Page class="page">
     <ActionBar title="Iniciar Sesión" class="action-bar" />
     <StackLayout class="form">
-      <TextField v-model="username" hint="Nombre de usuario" />
-      <TextField v-model="password" hint="Contraseña" secure="true" />
-      <Button text="Ingresar" @tap="login" class="btn btn-primary" />
+      <TextField v-model="username" hint="Username" />
+      <TextField v-model="password" hint="Password" secure="true" />
+      <Button text="Enter" @tap="login" class="btn btn-primary" />
     </StackLayout>
   </Page>
 </template>
@@ -20,7 +20,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await fetch('https://tuapi.com/login', {
+        const response = await fetch('http://127.0.0.1:8080/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

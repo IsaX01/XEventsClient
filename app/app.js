@@ -1,7 +1,11 @@
-import Vue from 'nativescript-vue'
+import Vue from 'nativescript-vue';
+import Vuex from 'vuex';
+import App from './components//pages/Login.vue';
+import store from './redux/store';
 
-import Home from './components/Home'
+Vue.use(Vuex);
 
 new Vue({
-  render: (h) => h('frame', [h(Home)]),
-}).$start()
+  store,
+  render: (h) => h('frame', [h(App)]),
+}).$start();
