@@ -5,7 +5,7 @@
         <TextField v-model="eventName" hint="Nombre del evento" />
         <DatePicker v-model="eventDate" />
         <TimePicker v-model="eventTime" />
-        <Button text="Guardar" @tap="saveEvent" class="btn btn-primary" />
+        <Button text="Guardar" @tap="saveEvent" class="btn btn-primary"></Button>
       </StackLayout>
     </Page>
   </template>
@@ -23,7 +23,7 @@
     methods: {
       async saveEvent() {
         try {
-          const response = await fetch('http://127.0.0.1:8080/api/events', {
+          const response = await fetch('http://10.0.2.2:8080/api/events', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

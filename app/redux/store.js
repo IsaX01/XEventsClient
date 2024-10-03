@@ -1,36 +1,41 @@
-// store.js
-import { createStore } from 'redux';
+import Vue from 'nativescript-vue';
+import Vuex from 'vuex';
 
-const initialState = {
-  user: null,
-  token: '',
-  categories: [],
-  places: [],
-  reservations: [],
-};
+Vue.use(Vuex);
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case 'LOGIN_SUCCESS':
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-      };
-    case 'SET_CATEGORIES':
-      return {
-        ...state,
-        categories: action.payload.categories,
-      };
-    case 'SET_PLACES':
-      return {
-        ...state,
-        places: action.payload.places,
-      };
-
-    default:
-      return state;
+const store = new Vuex.Store({
+  state: {
+    user: null,
+    categories: [],
+    places: []
+  },
+  mutations: {
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    SET_CATEGORIES(state, categories) {
+      state.categories = categories;
+    },
+    SET_PLACES(state, places) {
+      state.places = places;
+    }
+  },
+  actions: {
+    setUser({ commit }, user) {
+      commit('SET_USER', user);
+    },
+    setCategories({ commit }, categories) {
+      commit('SET_CATEGORIES', categories);
+    },
+    setPlaces({ commit }, places) {
+      commit('SET_PLACES', places);
+    }
+  },
+  getters: {
+    user: (state) => state.user,
+    categories: (state) => state.categories,
+    places: (state) => state.places
   }
-}
+});
 
-export const store = createStore(reducer);
+export default store;

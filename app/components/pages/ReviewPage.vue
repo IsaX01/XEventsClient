@@ -4,12 +4,12 @@
       <ActionBar :title="'Reseñar ' + place.name" class="action-bar" />
       <StackLayout class="form">
         <StackLayout orientation="horizontal">
-          <Label text="Calificación: " />
+          <Label text="Calificación: "></Label>
           <!-- Implementa tu componente de estrellas aquí -->
           <!-- <RatingStar v-model="rating" max="5" /> -->
         </StackLayout>
         <TextView v-model="comment" hint="Escribe tu comentario" />
-        <Button text="Enviar" @tap="submitReview" class="btn btn-primary" />
+        <Button text="Enviar" @tap="submitReview" class="btn btn-primary"></Button>
       </StackLayout>
     </Page>
   </template>
@@ -19,7 +19,7 @@
 
   export default {
     components: {
-      RatingStar,
+      // RatingStar,
     },
     props: ['place'],
     data() {
@@ -31,7 +31,7 @@
     methods: {
       async submitReview() {
         try {
-          const response = await fetch(`https://tuapi.com/places/${this.place.id}/reviews`, {
+          const response = await fetch(`https://10.0.2.2:8080/places/${this.place.id}/reviews`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
