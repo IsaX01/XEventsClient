@@ -16,7 +16,7 @@ const store = new Vuex.Store({
     SET_CATEGORIES(state, categories) {
       state.categories = categories;
     },
-    SET_PLACES(state, places) {
+    SET_PLACES(state, {places}) {
       state.places = places;
     }
   },
