@@ -7,7 +7,7 @@ import PickerField from '@nativescript/picker/vue'
 
 Vue.use(Vuex);
 Vue.use(DateTimePicker);
-Vue.use(PickerField)
+Vue.use(PickerField);
 
 new Vue({
   store,

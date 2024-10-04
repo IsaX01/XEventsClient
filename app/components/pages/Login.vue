@@ -45,7 +45,7 @@ export default {
         if (response.status == 200) {
           console.log("its ok")
           this.$store.commit('SET_USER', {
-            user: data.username,
+            user: data.user,
             token: data.token,
           });
           console.log('User:', this.$store.state.user);

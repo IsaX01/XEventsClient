@@ -1,6 +1,6 @@
 <template>
     <Page class="page">
-      <ActionBar :title="'Welcome, ' + user.user" class="action-bar" />
+      <ActionBar :title="'Welcome, ' + user.user.firstName + ' ' +  user.user.lastName" class="action-bar" />
       <GridLayout rows="auto, auto, *" class="main-layout" padding="15">
         <!-- Menú -->
         <GridLayout row="0" columns="auto, *, auto" rows="auto" class="search-container">
@@ -89,16 +89,16 @@
   export default {
     name: 'MainPage',
     computed: {
-      // user() {
-      //   return this.$store.state.user;
-      // },
-      // categories() {
-      //   return this.$store.state.categories;
-      // },
-      // places() {
-      //   return this.$store.state.places;
-      // },
-      ...mapState(['user', 'categories', 'places']),
+      user() {
+        return this.$store.state.user;
+      },
+      categories() {
+        return this.$store.state.categories;
+      },
+      places() {
+        return this.$store.state.places;
+      },
+      // ...mapState(['user', 'categories', 'places']),
     },
     data() {
       return {
@@ -154,6 +154,7 @@
         } finally {
           this.isLoading = false;
         }
+        console.log('User:', user);
       },
       getImageSource(image) {
         if (image && image !== '') {

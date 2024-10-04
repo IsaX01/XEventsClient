@@ -6,53 +6,104 @@
           <Label text="Resevation Form" class="label-text"></Label>
           <TextField v-model="name" hint="Event Name" class="input-text"/>
           <TextField v-model="description" hint="Description" class="input-text"/>
-          <DatePickerField v-model="startDate" hint="Select Date Start" />
-          <TimePickerField v-model="startTime" hint="Select Time Start" />
-          <DatePickerField v-model="endDate" hint="Select Date End" />
-          <TimePickerField v-model="endTime" hint="Select Time End" />
-          <PickerField hint="Choose Event Type:" :items="pickerItems" textField="name"></PickerField>
+          <DatePickerField
+            v-model="startDate"
+            hint="Select Date Start"
+            dateFormat="dd-MMMM-yyyy"
+          />
+          <TimePickerField
+            v-model="startTime"
+            hint="Select Time Start"
+            timeFormat="HH:mm"
+          />
+          <DatePickerField
+            v-model="endDate"
+            hint="Select Date End"
+            dateFormat="dd-MMMM-yyyy"
+          />
+          <TimePickerField
+            v-model="endTime"
+            hint="Select Time End"
+            timeFormat="HH:mm"
+          />
+          <PickerField hint="Choose Event Type:" :items="eventTypes" v-model="selectedEventType" textField="name" valueField="value" />
           <TextField v-model="capacity" hint="Capacity" class="input-text" keyboardType="number"/>
 
           <Button text="Guardar" @tap="saveEvent" class="outline-button"></Button>
         </StackLayout>
       </GridLayout>
-      
+
     </Page>
   </template>
 
   <script>
 import { GridLayout, Label, TextField } from '@nativescript/core';
+import { DatePickerField, TimePickerField } from '@nativescript/datetimepicker';
 
   export default {
     props: ['place'],
+    // components: {
+    //   DatePickerField,
+    //   TimePickerField
+    // },
     data() {
       return {
-        pickerItems: [
-          { name: 'Conference' },
-          { name: 'Workshop' },
-          { name: 'Party' }
-        ]
+        eventTypes: [
+          { value: "conference", name: "Conference" },
+          { value: "workshop", name: "Workshop" },
+          { value: "meetup", name: "Meetup" },
+          { value: "webinar", name: "Webinar" }
+        ],
+        selectedEventType: '',
+        category: '',
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: new Date(),
+        endTime: new Date(),
+        description: '',
+        name: '',
+        user() {
+          return this.$store.state.user.user;
+        },
       };
     },
     methods: {
       async saveEvent() {
+        const startDateString = this.startDate
+          ? this.startDate.toISOString().split('T')[0]
+          : null;
+        const endDateString = this.endDate
+          ? this.endDate.toISOString().split('T')[0]
+          : null;
+        const startTimeString = this.startTime
+          ? this.startTime.toTimeString().split(' ')[0]
+          : null;
+        const endTimeString = this.endTime
+          ? this.endTime.toTimeString().split(' ')[0]
+          : null;
         try {
           const response = await fetch('http://10.0.2.2:8080/api/events', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.$store.getState().token}`,
+              // Authorization: `Bearer ${this.$store.getState().token}`,
             },
             body: JSON.stringify({
               placeId: this.place.id,
-              name: this.eventName,
-              date: this.eventDate,
-              time: this.eventTime,
+              userId: this.user.id,
+              name: this.name,
+              description: this.description,
+              startDate: startDateString,
+              startTime: startTimeString,
+              endDate: endDateString,
+              endTime: endTimeString,
+              eventType: this.selectedEventType,
+              capacity: this.capacity,
             }),
           });
           const data = await response.json();
           if (data.success) {
-            alert('Reservación guardada con éxito');
+            alert(`Created Event Successfully ${this.name}`);
             this.$navigateBack();
           } else {
             alert('Error al guardar la reservación');
@@ -68,6 +119,8 @@ import { GridLayout, Label, TextField } from '@nativescript/core';
   <style scoped>
   .form {
     padding: 20;
+    border-radius: 20;
+    background-color: hsl(0, 0%, 9%);
   }
 
   .page {
@@ -122,15 +175,24 @@ import { GridLayout, Label, TextField } from '@nativescript/core';
   margin-bottom: 20;
 }
 
-/* PickerPage {
-} */
+.label-text-datetime {
+  font-size: 16;
+  color: white;
+  margin-bottom: 20;
+}
+
+PickerPage {
+  background-color: hsl(0, 0%, 9%);
+  color: white;
+}
 
 PickerPage ActionBar {
-  background-color: hsl(0, 0%, 3%);
+  background-color: hsl(0, 0%, 6%);
+  color: white;
 }
 
 PickerPage ListView {
-  background-color: hsl(0, 0%, 6%);
+  background-color: hsl(0, 0%, 9%);
   color: white;
 }
 
@@ -151,5 +213,6 @@ datepickerfield,
 pickerfield {
   padding: 12 4;
   margin-bottom: 15;
+  color: white;
 }
   </style>
