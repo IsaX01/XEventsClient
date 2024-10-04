@@ -3,13 +3,14 @@
       <ActionBar :title="'Reservation for: ' + place.placeName" class="action-bar" />
       <GridLayout rows="*" columns="*" horizontalAlignment="center" verticalAlignment="center" >
         <StackLayout class="form">
-          <TextField v-model="eventName" hint="Event Name" class="input-text"/>
-          <Label class="label-text" text="Date and Time Start"></Label>
-          <DatePicker v-model="startDate" class="input-time"/>
-          <TimePicker v-model="startTime" class="input-time"/>
-          <Label class="label-text" text="Date and Time End"></Label>
-          <DatePicker v-model="endDate" class="input-time"/>
-          <TimePicker v-model="endTime" class="input-time"/>
+          <Label text="Resevation Form" class="label-text"></Label>
+          <TextField v-model="name" hint="Event Name" class="input-text"/>
+          <TextField v-model="description" hint="Description" class="input-text"/>
+          <DatePickerField v-model="startDate" hint="Select Date Start" />
+          <TimePickerField v-model="startTime" hint="Select Time Start" />
+          <DatePickerField v-model="endDate" hint="Select Date End" />
+          <TimePickerField v-model="endTime" hint="Select Time End" />
+          <PickerField hint="Choose Event Type:" :items="pickerItems" textField="name"></PickerField>
           <TextField v-model="capacity" hint="Capacity" class="input-text" keyboardType="number"/>
 
           <Button text="Guardar" @tap="saveEvent" class="outline-button"></Button>
@@ -20,15 +21,17 @@
   </template>
 
   <script>
-import { GridLayout, TextField } from '@nativescript/core';
+import { GridLayout, Label, TextField } from '@nativescript/core';
 
   export default {
     props: ['place'],
     data() {
       return {
-        eventName: '',
-        eventDate: new Date(),
-        eventTime: new Date(),
+        pickerItems: [
+          { name: 'Conference' },
+          { name: 'Workshop' },
+          { name: 'Party' }
+        ]
       };
     },
     methods: {
@@ -99,7 +102,7 @@ import { GridLayout, TextField } from '@nativescript/core';
   line-height: 1.45;
   border-radius: 15rem;
   height: 35rem;
-  width: 200rem;
+  width: 300rem;
   align-items: center;
   justify-content: center;
   border-width: 0;
@@ -114,17 +117,39 @@ import { GridLayout, TextField } from '@nativescript/core';
 
 
 .label-text {
-  font-size: 16;
+  font-size: 24;
+  color: white;
+  margin-bottom: 20;
+}
+
+/* PickerPage {
+} */
+
+PickerPage ActionBar {
+  background-color: hsl(0, 0%, 3%);
+}
+
+PickerPage ListView {
+  background-color: hsl(0, 0%, 6%);
   color: white;
 }
 
-.input-time {
+timepickerfield.apply-css,
+datepickerfield.apply-css {
   border-radius: 5;
   padding: 5 10;
-  height: 35;
-  /* background-color: #2e2e2e; */
+  height: 35rem;
+  width: 300rem;
+  background-color: #2e2e2e;
   color: white;
-  font-size: 15;
+  font-size: 20;
+  margin-bottom: 15;
+}
+
+timepickerfield,
+datepickerfield,
+pickerfield {
+  padding: 12 4;
   margin-bottom: 15;
 }
   </style>
