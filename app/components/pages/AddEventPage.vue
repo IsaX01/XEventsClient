@@ -7,26 +7,38 @@
           <TextField v-model="name" hint="Event Name" class="input-text"/>
           <TextField v-model="description" hint="Description" class="input-text"/>
           <DatePickerField
-            v-model="startDate"
+            :date="startDate"
+            @dateChange="onStartDateChange"
             hint="Select Date Start"
             dateFormat="dd-MMMM-yyyy"
           />
           <TimePickerField
-            v-model="startTime"
+            :time="startTime"
+            @timeChange="onStartTimeChange"
             hint="Select Time Start"
             timeFormat="HH:mm"
           />
           <DatePickerField
-            v-model="endDate"
+            :date="endDate"
+            @dateChange="onEndDateChange"
             hint="Select Date End"
             dateFormat="dd-MMMM-yyyy"
           />
           <TimePickerField
-            v-model="endTime"
+            :time="endTime"
+            @timeChange="onEndTimeChange"
             hint="Select Time End"
             timeFormat="HH:mm"
           />
-          <PickerField hint="Choose Event Type:" :items="eventTypes" v-model="selectedEventType" textField="name" valueField="value" />
+          <!-- <DateTimePickerFields hintDate="select date" hintTime="select time" /> -->
+          <PickerField
+            :items="eventTypes"
+            :selectedValue="selectedEventType"
+            @selectedValueChange="onEventTypeChange"
+            textField="name"
+            valueField="value"
+            hint="Choose Event Type:"
+          />
           <TextField v-model="capacity" hint="Capacity" class="input-text" keyboardType="number"/>
 
           <Button text="Guardar" @tap="saveEvent" class="outline-button"></Button>
@@ -46,6 +58,11 @@ import { DatePickerField, TimePickerField } from '@nativescript/datetimepicker';
     //   DatePickerField,
     //   TimePickerField
     // },
+    computed: {
+      user() {
+        return this.$store.state.user.user;
+      },
+    },
     data() {
       return {
         eventTypes: [
@@ -56,18 +73,30 @@ import { DatePickerField, TimePickerField } from '@nativescript/datetimepicker';
         ],
         selectedEventType: '',
         category: '',
-        startDate: new Date(),
-        endDate: new Date(),
-        startTime: new Date(),
-        endTime: new Date(),
+        startDate: null,
+        endDate: null,
+        startTime: null,
+        endTime: null,
         description: '',
         name: '',
-        user() {
-          return this.$store.state.user.user;
-        },
       };
     },
     methods: {
+      onStartDateChange(event) {
+        this.startDate = event.value;
+      },
+      onStartTimeChange(event) {
+        this.startTime = event.value;
+      },
+      onEndDateChange(event) {
+        this.endDate = event.value;
+      },
+      onEndTimeChange(event) {
+        this.endTime = event.value;
+      },
+      onEventTypeChange(event) {
+        this.selectedEventType = event.value;
+      },
       async saveEvent() {
         const startDateString = this.startDate
           ? this.startDate.toISOString().split('T')[0]
@@ -101,8 +130,9 @@ import { DatePickerField, TimePickerField } from '@nativescript/datetimepicker';
               capacity: this.capacity,
             }),
           });
+          console.log(response);
           const data = await response.json();
-          if (data.success) {
+          if (response.status == 201) {
             alert(`Created Event Successfully ${this.name}`);
             this.$navigateBack();
           } else {
