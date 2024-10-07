@@ -15,6 +15,10 @@
 
 <script>
 import MainPage from './MainPage.vue';
+// import { messaging } from '@nativescript/firebase-messaging';
+import { firebase } from '@nativescript/firebase-core';
+import '@nativescript/firebase-messaging';
+
 export default {
   data() {
     return {
@@ -26,6 +30,9 @@ export default {
     async login() {
       console.log("HI")
       try {
+        const tokenDevice = await firebase().messaging().getToken();
+        console.log('Device Token:', tokenDevice);
+
         const response = await fetch('http://10.0.2.2:8080/auth/login', {
           method: 'POST',
           headers: {
@@ -34,6 +41,7 @@ export default {
           body: JSON.stringify({
             username: this.username,
             password: this.password,
+            deviceToken: tokenDevice,
           }),
         });
         console.log(response)

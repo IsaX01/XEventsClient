@@ -1,25 +1,20 @@
-// You can add your native dependencies here
-dependencies {
-//  implementation 'androidx.multidex:multidex:2.0.1'
-}
+apply plugin: 'com.google.gms.google-services' // Solo si usas Firebase
 
 android {
-  compileSdkVersion 34
-  buildToolsVersion "34"
-  // ndkVersion ""
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
 
-  defaultConfig {
-    minSdkVersion 23
-    targetSdkVersion 34
+    defaultConfig {
+        applicationId "org.nativescript.XEventsClient" // Asegúrate de que este sea tu applicationId correcto
+        minSdkVersion 23
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0.0"
 
-    // Version Information
-    versionCode 1
-    versionName "1.0.0"
-    
-    generatedDensities = []
-  }
+        generatedDensities = []
+    }
 
-  aaptOptions {
-    additionalParameters "--no-version-vectors"
-  }
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
+    }
 }

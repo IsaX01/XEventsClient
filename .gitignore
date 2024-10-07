@@ -19,6 +19,7 @@ yarn-error.log*
 .project
 tmp/
 typings/
+*.json
 
 # Visual Studio Code
 .vscode/*
