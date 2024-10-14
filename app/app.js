@@ -13,24 +13,30 @@ firebase().initializeApp().then(() => {
   firebase().messaging().requestPermission().then(() => {
       console.log('Permiso de notificaciones concedido');
       firebase().messaging().onMessage(message => {
-          if (message.data && message.data.addToCalendarUrl) {
-              Dialogs.confirm({
-                  title: message.notification.title,
-                  message: message.notification.body,
-                  okButtonText: "Add to google calendar",
-                  cancelButtonText: "Close"
-              }).then(result => {
-                  if (result) {
-                      Utils.openUrl(message.data.addToCalendarUrl);
-                  }
-              });
-          } else {
-              Dialogs.alert({
-                  title: message.notification.title,
-                  message: message.notification.body,
-                  okButtonText: "Accept"
-              });
-          }
+        if (message.notification) {
+          Dialogs.alert({
+            title: message.notification.title,
+            message: message.notification.body,
+            okButtonText: "Accept"
+          });
+        } else if (message.data && message.data.addToCalendarUrl) {
+          Dialogs.confirm({
+            title: message.data.title || "Nueva Notificación",
+            message: message.data.body || "Tienes una nueva notificación.",
+            okButtonText: "Add to Google Calendar",
+            cancelButtonText: "Close"
+          }).then(result => {
+            if (result) {
+              Utils.openUrl(message.data.addToCalendarUrl);
+            }
+          });
+        } else {
+          Dialogs.alert({
+            title: message.data.title || "Nueva Notificación",
+            message: message.data.body || "Tienes una nueva notificación.",
+            okButtonText: "Accept"
+          });
+        }
       });
   }).catch(error => {
       console.log('Error al solicitar permiso de notificaciones:', error);
